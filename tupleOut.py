@@ -3,6 +3,7 @@
 
 # Import required libraries
 import random
+from collections import Counter
 
 """
 diceRoll Function
@@ -28,8 +29,7 @@ def diceRoll(diceQuantity = -1):
         raise Exception("diceRoll Function Error - A dice roll was called for with an invalid quantity.")
     return result
 
-def roundUI(round, playerID)
-
+    
 # /// CONFIGURATION VARIABLES
 currentRound = 0    # Variable for tracking the current round (out of 3)
 maxRounds = 5       # Maximum rounds for the game
@@ -39,13 +39,40 @@ diceUsed = 3        # How many dice are rolled for each turn
 playerInfo = {
     "playerOneID": 1,       # Player ID for Player One
     "playerOneDice": [],    # List for storing Player One's matching dice
-    "playerOnePoints": 0,   # Variable to track Player One's score
+    "playerOneScore": 0,    # Variable to track Player One's score
     
-    "playerTwoID": 1,       # Player ID for Player Two
+    "playerTwoID": 2,       # Player ID for Player Two
     "playerTwoDice": [],    # List for storing Player Two's matching dice
-    "playerTwoPoints":, 0   # Variable to track Player Two's score
+    "playerTwoScore":, 0    # Variable to track Player Two's score
 }
 
+# Associate player IDs with names
+playerIDs = {
+    1, "Player One",
+    2, "Player Two"
+}
+
+"""
+roundUI Function
+This function outputs repetitive text including:
+    - The game's current round
+    - Who's turn it is
+    - The current scores of the players
+
+PARAMETERS:
+playerID (required) - Specify which player's turn it is using their player ID.
+"""
+def roundUI(playerID):
+    print(f"CURRENT ROUND: {currentRound} | SCORE: {playerInfo['playerOneScore']}-{playerInfo['playerTwoScore']}")
+
+    print(f"{playerIDs[playerID]}, it's your turn.")
+    
+    if currentRound == 1:
+        print("Type ROLL to roll the dice.\n")
+    elif currentRound > 1:
+        print("PLAYER 1: It's your turn. Would you like to ROLL or PASS?\n")
+    
+    
 # Function to check for different scenarios - tuple out, two matching, etc...
 """
 checkRoll Function
@@ -58,7 +85,7 @@ def checkRoll(dice):
     if tupleOut == True:
         return "tupleOut"
     
-    # If 3 dice match...
+    
 
 
 """
@@ -67,21 +94,31 @@ If the maximum number of rounds is reached or a player "tuples out", the gameAct
 """
 gameActive = True
 
+
+
+
+
+
 # Introductory message reminding the user to check the README if they haven't already
 print("Welcome to TupleOut! Make sure to read the README for the rules.")
 
 while gameActive == True:
-    
-    if currentRound == 0:
-        playerSelection = input("PLAYER 1: It's your turn. Type ROLL to roll the dice.\n")
-    elif currentRound > 0:
-        playerSelection = input("PLAYER 1: It's your turn. Would you like to ROLL or PASS?\n")
-    
     currentRound += 1
+    
+    playerSelection = input()
+    
     if playerSelection == "ROLL":
-        if 
         currentRoll = diceRoll(diceUsed)
         print("Your roll: " + str(currentRoll)+"\n")
+        
+        if len(currentRoll) > 1:
+            counter = Counter(currentRoll)
+            duplicates = []
+            
+            for item, count in counter.items():
+                if count > 1:
+                    duplicates.extend([item] * count)
+        
         
         
     
