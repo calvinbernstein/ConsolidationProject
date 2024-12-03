@@ -43,13 +43,13 @@ playerInfo = {
     
     "playerTwoID": 2,       # Player ID for Player Two
     "playerTwoDice": [],    # List for storing Player Two's matching dice
-    "playerTwoScore":, 0    # Variable to track Player Two's score
+    "playerTwoScore": 0    # Variable to track Player Two's score
 }
 
 # Associate player IDs with names
 playerIDs = {
-    1, "Player One",
-    2, "Player Two"
+    1: "Player One",
+    2: "Player Two"
 }
 
 """
@@ -61,16 +61,19 @@ This function outputs repetitive text including:
 
 PARAMETERS:
 playerID (required) - Specify which player's turn it is using their player ID.
+scoreboard (optional) - Choose whether to display the scoreboard and current round. If not specified, the function will default to not displaying the scoreboard.
 """
-def roundUI(playerID):
-    print(f"CURRENT ROUND: {currentRound} | SCORE: {playerInfo['playerOneScore']}-{playerInfo['playerTwoScore']}")
-
-    print(f"{playerIDs[playerID]}, it's your turn.")
+def roundUI(playerID, scoreboard = False):
+    
+    if scoreboard == True:
+        print(f"CURRENT ROUND: {currentRound} | SCORE: {playerInfo['playerOneScore']}-{playerInfo['playerTwoScore']}")    
+    
+    print(playerIDs[playerID] + ", it's your turn.")
     
     if currentRound == 1:
         print("Type ROLL to roll the dice.\n")
     elif currentRound > 1:
-        print("PLAYER 1: It's your turn. Would you like to ROLL or PASS?\n")
+        print("Type ROLL to roll the dice or PASS to end your turn.\n")
     
     
 # Function to check for different scenarios - tuple out, two matching, etc...
@@ -105,6 +108,7 @@ print("Welcome to TupleOut! Make sure to read the README for the rules.")
 while gameActive == True:
     currentRound += 1
     
+    roundUI(1)
     playerSelection = input()
     
     if playerSelection == "ROLL":

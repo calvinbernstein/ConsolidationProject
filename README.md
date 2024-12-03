@@ -13,7 +13,7 @@
 their turn ends.
 - If a player “tuples out”, their turn ends and they score 0 points for that turn.
 
-##### *Example Scenarios*
+### Example Scenarios
 1. A player starts out by rolling a 1, 2, and 2 on three dice.
 	- The 2’s are fixed, because there’s two of them, so they can’t re-roll those.
 	- But they want to reroll the 1, since it’s so low.
@@ -29,23 +29,23 @@ their turn ends.
 ### Additional Questions and Future Plans
 
 **When is the game over?**
-    The game ends after five rounds.
+The game ends after five rounds.
 
 **How and when will you display the running scores, so that players know what the current scores are?**
-    The scores will be displayed after each round.
+The scores will be displayed after each round.
     
 
 **Can the game record the scores for each game, including who won?**
-    The game will record the scores for each game at the end, including the final scores and the winner between the players.
+The game will record the scores for each game at the end, including the final scores and the winner between the players.
 
 **Can the game record something like “high score” records over many games, or a running tally of how many games a particular player has won?**
-    This feature will be added in a future version of the game, probably by storing the data in a CSV file.
+This feature will be added in a future version of the game, probably by storing the data in a CSV file.
 
 **Would the game be better or more interesting if the dice were changed, including the number of dice or the number of values on each die?**
-    The program has been designed with customization in mind. Many functions can be easily modified to change the number of dice rolled, the number of values on each die, and the values themselves.
+The program has been designed with customization in mind. Many functions can be easily modified to change the number of dice rolled, the number of values on each die, and the values themselves.
 
 **What about adding rules for additional special scoring?**
-    There are currently no plans for additional special scoring, but it may be added in a future version.
+There are currently no plans for additional special scoring, but it may be added in a future version.
 
 **How do I start the game?**
 Place the python file in a directory where you are comfortable with a results file being created. From there, navigate to the directory in your terminal and run the program using `python tupleOut.py`. Everything is straightforward after that!
