@@ -33,7 +33,6 @@ The game ends after five rounds.
 
 **How and when will you display the running scores, so that players know what the current scores are?**
 The scores will be displayed after each round.
-    
 
 **Can the game record the scores for each game, including who won?**
 The game will record the scores for each game at the end, including the final scores and the winner between the players.

@@ -38,12 +38,14 @@ diceUsed = 3        # How many dice are rolled for each turn
 # Dictionary containing player information
 playerInfo = {
     "playerOneID": 1,       # Player ID for Player One
-    "playerOneDice": [],    # List for storing Player One's matching dice
+    "playerOneDice": [3, 3],    # List for storing Player One's matching dice
     "playerOneScore": 0,    # Variable to track Player One's score
     
     "playerTwoID": 2,       # Player ID for Player Two
     "playerTwoDice": [],    # List for storing Player Two's matching dice
-    "playerTwoScore": 0    # Variable to track Player Two's score
+    "playerTwoScore": 0,    # Variable to track Player Two's score
+    
+    "winner": ""
 }
 
 # Associate player IDs with names
@@ -61,19 +63,25 @@ This function outputs repetitive text including:
 
 PARAMETERS:
 playerID (required) - Specify which player's turn it is using their player ID.
-scoreboard (optional) - Choose whether to display the scoreboard and current round. If not specified, the function will default to not displaying the scoreboard.
 """
 def roundUI(playerID, scoreboard = False):
     
-    if scoreboard == True:
-        print(f"CURRENT ROUND: {currentRound} | SCORE: {playerInfo['playerOneScore']}-{playerInfo['playerTwoScore']}")    
-    
-    print(playerIDs[playerID] + ", it's your turn.")
+    print(f"************************ ROUND {currentRound} OF {maxRounds} | SCORE: {playerInfo['playerOneScore']}-{playerInfo['playerTwoScore']}")
     
     if currentRound == 1:
-        print("Type ROLL to roll the dice.\n")
+        instructions = "Type ROLL to roll the dice.\n"
     elif currentRound > 1:
-        print("Type ROLL to roll the dice or PASS to end your turn.\n")
+        instructions = "Type ROLL to roll the dice or PASS to end your turn.\n"
+    
+    print(playerIDs[playerID] + ", it's your turn. " + instructions)
+    
+    if playerID == 1:
+        if len(playerInfo["playerOneDice"]) > 0:
+            print("FIXED DICE: ", playerInfo["playerOneDice"])
+    elif playerID == 2:
+        if len(playerInfo["playerTwoDice"]) > 0:
+            print("FIXED DICE: ", playerInfo["playerTwoDice"])
+    
     
     
 # Function to check for different scenarios - tuple out, two matching, etc...
@@ -82,14 +90,42 @@ checkRoll Function
 This function analyzes a list of dice for common scenarios which trigger an event in the game.
 More specifically, the function checks for matching dice and "tupling out".
 
-"""
-def checkRoll(dice):
-    tupleOut = all(i == list[0] for i in list)
-    if tupleOut == True:
-        return "tupleOut"
-    
-    
+If neither scenarios occur on the roll, the function tells the player how many points they earned and assigns them the points.
 
+If the function finds that the player has "tupled out", it will return the string "tupleOut".
+If the function finds any matching dice, it will return a list containing the duplicates.
+
+PARAMETERS:
+playerID (required) - Specify which player's roll is being checked.
+dice (required) - Input a list of dice to check.
+"""
+def checkRoll(playerID, dice):
+    duplicates = []
+        
+    if len(dice) > 1:
+            
+            counter = Counter(dice)
+            
+            for item, count in counter.items():
+                if count > 1:
+                    duplicates.extend([item] * count)
+                    
+            if len(duplicates) > 0:
+                
+                print("Two of your dice matched. ")
+                print(playerInfo["playerOneDice"])
+    
+    elif len(dice) == 1:
+        if playerID == 1:
+            # print(playerInfo["playerOneDice"][1])
+            if dice == [playerInfo["playerOneDice"][1]]:
+                duplicates.extend(dice)
+                print("TUPLE OUT")
+                
+    else:
+        raise Exception("checkRoll Error: An improper amount of dice were provided to the function.")
+    
+    
 
 """
 This variable will keep track of whether the game should continue running or not.
@@ -98,35 +134,28 @@ If the maximum number of rounds is reached or a player "tuples out", the gameAct
 gameActive = True
 
 
-
-
-
-
 # Introductory message reminding the user to check the README if they haven't already
-print("Welcome to TupleOut! Make sure to read the README for the rules.")
+print("Welcome to TupleOut! Make sure to read the README for the rules.\n\n")
 
 while gameActive == True:
     currentRound += 1
     
+    # Player 1
     roundUI(1)
     playerSelection = input()
     
     if playerSelection == "ROLL":
-        currentRoll = diceRoll(diceUsed)
+        currentRoll = diceRoll(diceUsed - len(playerInfo["playerOneDice"]))
         print("Your roll: " + str(currentRoll)+"\n")
-        
-        if len(currentRoll) > 1:
-            counter = Counter(currentRoll)
-            duplicates = []
             
-            for item, count in counter.items():
-                if count > 1:
-                    duplicates.extend([item] * count)
-        
-        
-        
+        # print([playerInfo["playerOneDice"][1]])
+        playerInfo["playerOneScore"] += sum(currentRoll)
+        checkRoll(1, currentRoll)
     
         
 
+print("GAME OVER **************************************************")
 
-
+if playerInfo["playerOneScore"] > playerInfo["playerTwoScore"]:
+    print(f"Player One won with a final score of ")
+    
