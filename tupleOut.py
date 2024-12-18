@@ -64,7 +64,7 @@ This function outputs repetitive text including:
 PARAMETERS:
 playerID (required) - Specify which player's turn it is using their player ID.
 """
-def roundUI(playerID, scoreboard = False):
+def roundUI(playerID):
     
     print(f"************************ ROUND {currentRound} OF {maxRounds} | SCORE: {playerInfo['playerOneScore']}-{playerInfo['playerTwoScore']}")
     
@@ -103,17 +103,19 @@ def checkRoll(playerID, dice):
     duplicates = []
         
     if len(dice) > 1:
-            
-            counter = Counter(dice)
-            
-            for item, count in counter.items():
-                if count > 1:
-                    duplicates.extend([item] * count)
-                    
-            if len(duplicates) > 0:
-                
-                print("Two of your dice matched. ")
-                print(playerInfo["playerOneDice"])
+        counter = Counter(dice)
+        
+        for item, count in counter.items():
+            if count > 1:
+                duplicates.extend([item] * count)
+        
+        if len(duplicates) > 0:
+            print(f"Two of your dice matched: {duplicates}")
+            return True # Returns true to indicate that the game should continue
+        elif len(duplicates) == 0:
+            print("You currently have no frozen dice.")
+            return True # Returns true to indicate that the game should continue
+        playerInfo["playerOneScore"] += sum(dice)
     
     elif len(dice) == 1:
         if playerID == 1:
@@ -121,11 +123,33 @@ def checkRoll(playerID, dice):
             if dice == [playerInfo["playerOneDice"][1]]:
                 duplicates.extend(dice)
                 print("TUPLE OUT")
+                return False # Returns false to signify that it isn't time to move onto another round
                 
     else:
         raise Exception("checkRoll Error: An improper amount of dice were provided to the function.")
     
     
+    
+    
+def playerOneTurn():
+    
+    
+    turnOver = False    # Variable to track if the turn is ongoing
+    
+    def roll():
+        playerSelection = input("Would you like to ROLL or PASS? ")
+        currentRoll = diceRoll(diceUsed - len(playerInfo["playerOneDice"]))
+        print("Your roll: " + str(currentRoll)+"\n")
+        checkRoll(1, currentRoll)
+            
+        if playerSelection == "ROLL":
+            roll()
+        elif playerSelection == "PASS":
+            turnOver = True
+    
+    roll()
+            
+
 
 """
 This variable will keep track of whether the game should continue running or not.
@@ -136,21 +160,14 @@ gameActive = True
 
 # Introductory message reminding the user to check the README if they haven't already
 print("Welcome to TupleOut! Make sure to read the README for the rules.\n\n")
+currentRound = 1
+roundUI(1)
+moveOn = playerOneTurn()
 
-while gameActive == True:
-    currentRound += 1
+if moveOn == True:
+    print("player two's turn!")
     
-    # Player 1
-    roundUI(1)
-    playerSelection = input()
     
-    if playerSelection == "ROLL":
-        currentRoll = diceRoll(diceUsed - len(playerInfo["playerOneDice"]))
-        print("Your roll: " + str(currentRoll)+"\n")
-            
-        # print([playerInfo["playerOneDice"][1]])
-        playerInfo["playerOneScore"] += sum(currentRoll)
-        checkRoll(1, currentRoll)
     
         
 
